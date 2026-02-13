@@ -1,0 +1,8 @@
+#!/bin/bash
+# MoltOS NanoPi - Photonic Intelligence
+if [ -z "$*" ]; then
+    echo "Usage: nanopi '<your question>'"
+    exit 1
+fi
+
+ollama run opendev-labs/nanopi "$*"
