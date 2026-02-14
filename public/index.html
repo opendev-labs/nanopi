@@ -104,6 +104,38 @@
             font-weight: 500;
         }
 
+        /* Auth Helper Button */
+        .auth-helper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-auth {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-auth:hover {
+            background: rgba(0, 255, 65, 0.1);
+            border-color: rgba(0, 255, 65, 0.3);
+            color: #00ff41;
+        }
+
         @keyframes pulse {
 
             0%,
@@ -145,11 +177,21 @@
         <div class="loader-text">Initializing Neural Link...</div>
     </div>
 
+    <!-- Auth Helper Overlay -->
+    <div class="auth-helper">
+        <button onclick="openLoginPopup()" class="btn-auth">
+            <span>🔑</span> Login External
+        </button>
+        <button onclick="reloadFrame()" class="btn-auth" title="Refresh">
+            <span>↺</span>
+        </button>
+    </div>
+
     <!-- Iframe -->
     <div class="iframe-container" id="iframe-container">
-        <iframe src="https://opendev-labs-nanopi.hf.space"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; microphone" allowfullscreen
-            onload="onIframeLoad()">
+        <iframe src="https://opendev-labs-nanopi.hf.space" id="app-frame"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; microphone; clipboard-read; clipboard-write"
+            allowfullscreen onload="onIframeLoad()">
         </iframe>
     </div>
 
@@ -195,7 +237,27 @@
             }, remaining);
         }
 
-        // Fallback safety (if iframe load event doesn't fire correctly)
+        // Auth Helpers
+        window.openLoginPopup = function () {
+            // Open the HF Space auth directly in a popup window
+            // This bypasses iframe restrictions (X-Frame-Options) for the login flow
+            const width = 600;
+            const height = 700;
+            const left = (window.innerWidth - width) / 2;
+            const top = (window.innerHeight - height) / 2;
+
+            window.open(
+                'https://opendev-labs-nanopi.hf.space/login',
+                'NanoPi Login',
+                `width=${width},height=${height},top=${top},left=${left}`
+            );
+        }
+
+        window.reloadFrame = function () {
+            document.getElementById('app-frame').src = document.getElementById('app-frame').src;
+        }
+
+        // Fallback safety
         setTimeout(() => {
             if (!iframeContainer.classList.contains('loaded')) {
                 window.onIframeLoad();
