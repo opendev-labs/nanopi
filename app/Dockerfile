@@ -6,16 +6,15 @@ RUN apt-get update && apt-get install -y curl procps git python3-pip && rm -rf /
 # 2. Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
 
-# 3. Build Custom NanoPi Model
-# Move Modelfile to build context
+# 3. Pull Official NanoPi Model
+# Move Modelfile to build context (Optional, keeping for reference/fallback)
 COPY Modelfile /root/Modelfile
 
-# Start Ollama, Pull Base, Create Custom Model
+# Start Ollama, Pull Model
 RUN ollama serve & \
     OLLAMA_PID=$! && \
     sleep 10 && \
-    ollama pull qwen2.5:1.5b && \
-    ollama create opendev-labs/nanopi -f /root/Modelfile && \
+    ollama pull opendev-labs/nanopi && \
     kill $OLLAMA_PID
 
 # 4. Pre-download Embedding Model (Optimization)
