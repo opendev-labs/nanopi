@@ -47,9 +47,15 @@ RUN chmod +x /app/start.sh
 # FIX: CORS and Security
 ENV CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space,https://opendev-labs.github.io,http://localhost:7860,http://0.0.0.0:7860"
 
+# FIX: Database and Analytics
+# The DATABASE_URL must be provided in the Space Secrets
+ENV SCARF_NO_ANALYTICS=true
+ENV WEBUI_AUTH=true
+
 # IMPORTANT: The following secrets MUST be set in the Hugging Face Space Settings (Repository > Settings > Variables and Secrets)
 # Do NOT hardcode them here for production/public spaces.
 # ENV WEBUI_SECRET_KEY="your-secret-key-here"
 # ENV WEBUI_JWT_SECRET_KEY="your-jwt-secret-key-here"
+# ENV DATABASE_URL="..."
 
 CMD ["/app/start.sh"]
