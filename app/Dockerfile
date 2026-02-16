@@ -23,9 +23,10 @@ RUN python3 -c "import os; from huggingface_hub import snapshot_download; snapsh
 
 # 5. Environment Variables
 # FIX: WEBUI_URL is crucial for OAuth redirects to work correctly in Spaces
+# FIX: WEBUI_URL is crucial for OAuth redirects to work correctly in Spaces
 ENV WEBUI_URL=https://opendev-labs-nanopi.hf.space
 # FIX: Allow the Space domain as an origin to prevent CORS/Redirect issues
-ENV ORIGINS="https://opendev-labs-nanopi.hf.space,http://localhost:7860,http://0.0.0.0:7860"
+ENV ORIGINS="https://opendev-labs-nanopi.hf.space,https://opendev-labs.github.io,http://localhost:7860,http://0.0.0.0:7860"
 # FIX: Force Open WebUI to use environment variables for OAuth instead of database config
 ENV ENABLE_OAUTH_PERSISTENT_CONFIG="false"
 ENV OLLAMA_BASE_URL=http://127.0.0.1:11434
@@ -44,7 +45,7 @@ COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 # FIX: CORS and Security
-ENV CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space,http://localhost:7860,http://0.0.0.0:7860"
+ENV CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space,https://opendev-labs.github.io,http://localhost:7860,http://0.0.0.0:7860"
 
 # IMPORTANT: The following secrets MUST be set in the Hugging Face Space Settings (Repository > Settings > Variables and Secrets)
 # Do NOT hardcode them here for production/public spaces.
