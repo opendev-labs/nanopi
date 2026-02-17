@@ -1,3 +1,12 @@
+---
+title: NanoPi
+emoji: 🥧
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+pinned: false
+app_port: 7860
+---
 # NanoPi - Photonic Intelligence Monorepo
 
 This repository contains the source code for the NanoPi ecosystem.
