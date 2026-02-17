@@ -15,4 +15,5 @@ ollama list
 
 # Start Open WebUI 
 # using the internal backend start script which is standard in the image
+export WEBUI_URL=https://opendev-labs-nanopi.hf.space
 exec bash /app/backend/start.sh
