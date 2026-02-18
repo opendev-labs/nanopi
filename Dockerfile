@@ -8,7 +8,7 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # 3. Pull Official NanoPi Model
 # Move Modelfile to build context (Optional, keeping for reference/fallback)
-COPY Modelfile /root/Modelfile
+COPY app/Modelfile /root/Modelfile
 
 # Start Ollama, Pull Model
 RUN ollama serve & \
@@ -54,7 +54,7 @@ ENV HOST=0.0.0.0
 ENV FORWARDED_ALLOW_IPS='*'
 ENV PORT=7860
 # FIX: Start Script
-COPY start.sh /app/start.sh
+COPY app/start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 # FIX: CORS and Security
