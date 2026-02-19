@@ -10,6 +10,10 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 # Move Modelfile to build context (Optional, keeping for reference/fallback)
 COPY app/Modelfile /root/Modelfile
 
+# FIX: Set OLLAMA_MODELS to a specific path and ensure permissions
+ENV OLLAMA_MODELS=/app/ollama
+RUN mkdir -p /app/ollama && chmod 777 /app/ollama
+
 # Start Ollama, Pull Model
 RUN ollama serve & \
     OLLAMA_PID=$! && \
@@ -41,7 +45,7 @@ ENV OAUTH_PROVIDER_NAME="Google"
 # ------------------------------------------
 
 # FIX: Force Open WebUI to use environment variables for OAuth instead of database config
-ENV ENABLE_OAUTH_PERSISTENT_CONFIG="true"
+ENV ENABLE_OAUTH_PERSISTENT_CONFIG="false"
 ENV OLLAMA_BASE_URL=http://127.0.0.1:11434
 ENV WEBUI_NAME="NanoPi"
 ENV WEBUI_SUBTITLE="Photonic Intelligence"
