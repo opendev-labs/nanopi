@@ -22,8 +22,8 @@ fi
 export WEBUI_URL=https://opendev-labs-nanopi.hf.space
 
 # Fix CORS error - engineio rejects unknown origins
-export ORIGINS="https://opendev-labs-nanopi.hf.space,https://opendev-labs.github.io,http://localhost:7860,http://0.0.0.0:7860"
-export CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space,https://opendev-labs.github.io,http://localhost:7860,http://0.0.0.0:7860"
+export ORIGINS="https://opendev-labs-nanopi.hf.space"
+export CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space"
 
 # Start Open WebUI 
 export ENABLE_OAUTH_PERSISTENT_CONFIG="false"
