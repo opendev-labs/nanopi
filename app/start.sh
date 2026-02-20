@@ -18,12 +18,7 @@ else
     echo "Model opendev-labs/nanopi found."
 fi
 
-# Force absolute URL for backend to fix redirect loop
-export WEBUI_URL=https://opendev-labs-nanopi.hf.space
-
-# Fix CORS error - engineio rejects unknown origins
-export ORIGINS="https://opendev-labs-nanopi.hf.space"
-export CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space"
+# Network overrides handled before backend starts
 
 # Hotfix to clean malformed custom WEBUI_URL protocol from Database
 # Prevents redirect domain matching bugs when protocol is missing.
@@ -86,6 +81,19 @@ else:
     except Exception as e:
         print('SQLite DB hotfix failed:', e)
 "
+
+# Force absolute URL for backend to fix redirect loop
+export WEBUI_URL="https://opendev-labs-nanopi.hf.space"
+
+# Intercept and correct Hugging Face SPACE_HOST environment injection
+# The internal start script overrides WEBUI_URL with SPACE_HOST which lacks https://
+if [ -n "$SPACE_HOST" ]; then
+    export SPACE_HOST="https://$SPACE_HOST"
+fi
+
+# Fix CORS error - engineio rejects unknown origins
+export ORIGINS="https://opendev-labs-nanopi.hf.space"
+export CORS_ALLOW_ORIGIN="https://opendev-labs-nanopi.hf.space"
 
 # Start Open WebUI 
 export ENABLE_OAUTH_PERSISTENT_CONFIG="false"
