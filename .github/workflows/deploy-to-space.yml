@@ -14,4 +14,5 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://oauth2:$HF_TOKEN@huggingface.co/spaces/opendev-labs/nanopi main
+        run: |
+          git push --force https://oauth2:$HF_TOKEN@huggingface.co/spaces/opendev-labs/nanopi $(git commit-tree -m "Deploy to HF Space" HEAD^{tree}):main
