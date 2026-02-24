@@ -15,6 +15,9 @@ COPY app/Modelfile /root/Modelfile
 ENV OLLAMA_MODELS=/app/ollama
 RUN mkdir -p /app/ollama && chmod 777 /app/ollama
 
+# FIX: Keep model permanently in RAM for hypersonic cold-start speeds
+ENV OLLAMA_KEEP_ALIVE="-1"
+
 # Start Ollama, Pull Model
 RUN ollama serve & \
     OLLAMA_PID=$! && \

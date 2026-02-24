@@ -10,13 +10,9 @@ until curl -s http://localhost:11434/api/tags > /dev/null; do
 done
 echo "Ollama is ready!"
 
-# Ensure model is ready (Robust Runtime Check)
-if ! ollama list | grep -q "opendev-labs/nanopi"; then
-    echo "Model not found. Pulling opendev-labs/nanopi..."
-    ollama pull opendev-labs/nanopi
-else
-    echo "Model opendev-labs/nanopi found."
-fi
+# Auto-Update Mechanism: Always ensure we have the absolute latest model from Ollama Registry
+echo "Checking for latest NanoPi model updates..."
+ollama pull opendev-labs/nanopi
 
 # Network overrides handled before backend starts
 
