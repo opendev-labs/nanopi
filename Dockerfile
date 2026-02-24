@@ -17,6 +17,8 @@ RUN mkdir -p /app/ollama && chmod 777 /app/ollama
 
 # FIX: Keep model permanently in RAM for hypersonic cold-start speeds
 ENV OLLAMA_KEEP_ALIVE="-1"
+# FIX: Prevent OpenWebUI from overriding the keep_alive to 5 minutes via the API
+ENV KEEP_ALIVE="-1"
 
 # Start Ollama, Pull Model
 RUN ollama serve & \
