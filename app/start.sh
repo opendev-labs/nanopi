@@ -14,6 +14,42 @@ echo "Ollama is ready!"
 echo "Checking for latest NanoPi model updates..."
 ollama pull opendev-labs/nanopi
 
+# ============================================================
+# ONE-TIME ADMIN RESET
+# Set RESET_ADMIN=true in HF Space Secrets to wipe all users.
+# First person to sign up after restart becomes the new admin.
+# IMPORTANT: Remove RESET_ADMIN secret after reset is done!
+# ============================================================
+if [ "$RESET_ADMIN" = "true" ]; then
+  echo "[RESET] RESET_ADMIN=true detected. Wiping all users from database..."
+  python3 -c "
+import os, sys
+database_url = os.environ.get('DATABASE_URL', '')
+if not database_url.startswith('postgres'):
+    print('[RESET] No Postgres DATABASE_URL found. Skipping.')
+    sys.exit(0)
+try:
+    import psycopg2
+    conn = psycopg2.connect(database_url)
+    c = conn.cursor()
+    # Wipe auth, users, and related session tables
+    for table in ['auth', 'user', 'chat', 'chatidtag', 'tag', 'document', 'prompt', 'memory', 'tool', 'function', 'model', 'knowledge', 'usergroup']:
+        try:
+            c.execute(f'DELETE FROM \"{table}\"')
+            print(f'[RESET] Cleared table: {table}')
+        except Exception as te:
+            print(f'[RESET] Skipped table {table}: {te}')
+            conn.rollback()
+    conn.commit()
+    conn.close()
+    print('[RESET] Done! All users wiped. First signup will be admin.')
+    print('[RESET] ACTION REQUIRED: Remove the RESET_ADMIN secret from HF Space settings now!')
+except Exception as e:
+    print(f'[RESET] Failed: {e}')
+"
+fi
+# ============================================================
+
 # Network overrides handled before backend starts
 
 # Hotfix to clean malformed custom WEBUI_URL protocol from Database
