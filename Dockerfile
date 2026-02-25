@@ -20,6 +20,12 @@ ENV OLLAMA_KEEP_ALIVE="-1"
 # FIX: Prevent OpenWebUI from overriding the keep_alive to 5 minutes via the API
 ENV KEEP_ALIVE="-1"
 
+# EXTREME CPU OPTIMIZATIONS FOR 2 vCPU FREE TIER
+# Force single-thread execution to prevent context switching overhead on 2 cores
+ENV OLLAMA_NUM_PARALLEL="1"
+# Prevent any GPU probing/allocation attempts which waste cycles
+ENV OLLAMA_MAX_VRAM="0"
+
 # Start Ollama, Pull Model
 RUN ollama serve & \
     OLLAMA_PID=$! && \
